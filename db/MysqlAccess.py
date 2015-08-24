@@ -34,6 +34,13 @@ class MysqlAccess():
         except Exception, e:
             print '# insert xc Ticket exception:', e
 
+    def insertXCChannel(self, args_list):
+        try:
+            sql = 'replace into nd_xc_mid_channel(channel_id, channel_name, channel_url, channel_type) values(%s)' % Common.agg(4)
+            self.xc_db.executemany(sql, args_list)
+        except Exception, e:
+            print '# insert xc channels exception:', e
+
     def selectChannel(self, args):
         try:
             sql = 'select channel_id, channel_url, channel_type from nd_xc_mid_channel where status = 1 and channel_type = %s'

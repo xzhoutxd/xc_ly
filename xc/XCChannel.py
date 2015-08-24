@@ -42,6 +42,9 @@ class Channel():
         # channel items
         self.channel_items      = []
 
+        # channel list
+        self.channel_list       = []
+
     # 频道页初始化
     def init(self, channel_id, channel_url, channel_type, begin_time):
         self.channel_id = channel_id
@@ -118,6 +121,29 @@ class Channel():
                 i_p += 1
         return i_p
 
+    def channelList(self): 
+        self.channelPage()
+        if self.channel_page:
+            m = re.search(r'<ul class="search_cate">\s+<li class="cate_content.+?">\s+<span class="b">.+?<span class="area_box">(.+?)</span>', self.channel_page, flags=re.S)
+            if m:
+                area_infos = m.group(1)
+                p = re.compile(r'<a href="(.+?)".+?>(.+?)</a>', flags=re.S)
+                for area in p.finditer(area_infos):
+                    channel_url, c_name = Config.xc_piao_home + area.group(1), area.group(2)
+                    channel_id = 0
+                    if channel_url:
+                        m = re.search(r'D(\d+)', channel_url)
+                        if m:
+                            channel_id = m.group(1)
+                    if c_name:
+                        m = re.search(r'(.+?)\(', c_name, flags=re.S)
+                        if m:
+                            channel_name = m.group(1).strip()
+                        else:
+                            channel_name = c_name.strip()
+                    if int(channel_id) != 0 and channel_url:
+                        self.channel_list.append((channel_id, channel_name, channel_url, self.channel_type))
+                    
     def channelPage(self):
         if self.channel_url:
             refers = Config.xc_home
@@ -129,18 +155,25 @@ class Channel():
                 self.channel_page = data
                 self.channel_pages['channel-home'] = (self.channel_url, data)
 
-
     def antPage(self, val):
         channel_id, channel_url, channel_type, begin_time = val
         self.init(channel_id, channel_url, channel_type, begin_time)
         self.config()
 
+    def antChannelList(self, val):
+        self.channel_url, self.channel_type = val
+        self.channelList()
+
 
 if __name__ == '__main__':
     Common.log(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))
     c = Channel()
-    val = (1,'http://piao.ctrip.com/dest/p-shandong-10/s-tickets/A110D169/', 1, Common.now())
-    c.antPage(val)
+    #val = (1,'http://piao.ctrip.com/dest/p-shandong-10/s-tickets/A110D169/', 1, Common.now())
+    #c.antPage(val)
+    val = ('http://piao.ctrip.com/dest/p-shandong-10/s-tickets/A110/', 1)
+    c.antChannelList(val)
+    for val in c.channel_list:
+        Common.log(val)
     time.sleep(1)
     Common.log(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))
 
