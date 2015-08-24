@@ -410,10 +410,9 @@ def fix_url(url):
 # local ip
 import socket
 def local_ip():
-    #host = socket.gethostname()
-    #ip = socket.gethostbyname(host)
-    #return ip
-    return '192.168.5.23'
+    host = socket.gethostname()
+    ip = socket.gethostbyname(host)
+    return ip
 
 def agg(num,s='%s'):
     return ','.join([ s for i in xrange(num)])
