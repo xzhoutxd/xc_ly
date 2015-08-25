@@ -35,6 +35,10 @@ class Channel():
         self.channel_name       = '' # 频道name
         self.channel_type       = '' # 频道类型
 
+        # 频道所属地理位置信息
+        self.province_id        = 0  # 省,州id
+        self.province_name      = '' # 省,州名称
+
         # 原数据信息
         self.channel_page       = '' # 频道页面html内容
         self.channel_pages      = {} # 频道页面内请求数据列表
@@ -142,7 +146,7 @@ class Channel():
                         else:
                             channel_name = c_name.strip()
                     if int(channel_id) != 0 and channel_url:
-                        self.channel_list.append((channel_id, channel_name, channel_url, self.channel_type))
+                        self.channel_list.append((channel_id, channel_name, channel_url, str(self.channel_type), str(selg.province_id), self.province_name))
                     
     def channelPage(self):
         if self.channel_url:
@@ -161,7 +165,7 @@ class Channel():
         self.config()
 
     def antChannelList(self, val):
-        self.channel_url, self.channel_type = val
+        self.channel_url, self.channel_type, self.province_id, self.province_name = val
         self.channelList()
 
 

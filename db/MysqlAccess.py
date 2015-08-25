@@ -36,7 +36,7 @@ class MysqlAccess():
 
     def insertXCChannel(self, args_list):
         try:
-            sql = 'replace into nd_xc_mid_channel(channel_id, channel_name, channel_url, channel_type) values(%s)' % Common.agg(4)
+            sql = 'replace into nd_xc_mid_channel(channel_id, channel_name, channel_url, channel_type, province_id, province_name) values(%s)' % Common.agg(6)
             self.xc_db.executemany(sql, args_list)
         except Exception, e:
             print '# insert xc channels exception:', e

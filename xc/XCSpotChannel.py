@@ -32,7 +32,7 @@ class XCSpotChannel():
         try:
             # channel
             c = Channel()
-            _val = ('http://piao.ctrip.com/dest/p-shandong-10/s-tickets/A110/',1)
+            _val = ('http://piao.ctrip.com/dest/p-shandong-10/s-tickets/A110/',1,10,'山东')
             c.antChannelList(_val)
             channels = c.channel_list
             if channels and len(channels) > 0:
