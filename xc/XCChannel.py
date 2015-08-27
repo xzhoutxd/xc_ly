@@ -146,7 +146,7 @@ class Channel():
                         else:
                             channel_name = c_name.strip()
                     if int(channel_id) != 0 and channel_url:
-                        self.channel_list.append((channel_id, channel_name, channel_url, str(self.channel_type), str(selg.province_id), self.province_name))
+                        self.channel_list.append((channel_id, channel_name, channel_url, str(self.channel_type), str(self.province_id), self.province_name))
                     
     def channelPage(self):
         if self.channel_url:
